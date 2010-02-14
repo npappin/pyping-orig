@@ -33,6 +33,7 @@ setup(
     author="Pierre Bourdon",
     author_email="delroth@gmail.com",
     description="An implementation of ICMP ping in Python",
+    long_description=open('README').read(),
     license="GPL2",
     keywords="ping icmp network latency",
     url="http://bitbucket.org/delroth/python-ping/",
