@@ -35,5 +35,19 @@ setup(
     description="An implementation of ICMP ping in Python",
     license="GPL2",
     keywords="ping icmp network latency",
-    url="http://bitbucket.org/delroth/python-ping/"
+    url="http://bitbucket.org/delroth/python-ping/",
+    
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Intended Audience :: System Administrators",
+        "License :: OSI Approved :: GNU General Public License (GPL)",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: Unix",
+        "Programming Language :: Python :: 2",
+        "Topic :: Internet",
+        "Topic :: Software Developement :: Libraries :: Python Modules",
+        "Topic :: System :: Networking",
+        "Topic :: System :: Networking :: Monitoring",
+    ],
 )
