@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 #-*- encoding: utf-8 -*-
 """
-FILE.py
-DESC
+setup.py
+Distutils setup script.
 
-Copyright (c) 2008 Pierre "delroth" Bourdon <root@delroth.is-a-geek.org>
+Copyright (c) 2010 Pierre Bourdon <delroth@gmail.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
