@@ -48,7 +48,6 @@ setup(
         "Operating System :: Unix",
         "Programming Language :: Python :: 2",
         "Topic :: Internet",
-        "Topic :: Software Developement :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
         "Topic :: System :: Networking :: Monitoring",
     ],
