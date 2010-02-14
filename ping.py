@@ -28,33 +28,12 @@
  
     Rewrite by George Notaras:
       -> http://www.g-loaded.eu/2009/10/30/python-ping/
+
+    Fork by Pierre Bourdon:
+      -> http://bitbucket.org/delroth/python-ping/
  
     Revision history
     ~~~~~~~~~~~~~~~~
- 
-    November 8, 2009
-    ----------------
-    Improved compatibility with GNU/Linux systems.
- 
-    Fixes by:
-     * George Notaras -- http://www.g-loaded.eu
-    Reported by:
-     * Chris Hallman -- http://cdhallman.blogspot.com
- 
-    Changes in this release:
-     - Re-use time.time() instead of time.clock(). The 2007 implementation
-       worked only under Microsoft Windows. Failed on GNU/Linux.
-       time.clock() behaves differently under the two OSes[1].
- 
-    [1] http://docs.python.org/library/time.html#time.clock
- 
-    May 30, 2007
-    ------------
-    little rewrite by Jens Diemer:
-     -  change socket asterisk import to a normal import
-     -  replace time.time() with time.clock()
-     -  delete "return None" (or change to "return" only)
-     -  in checksum() rename "str" to "source_string"
  
     November 22, 1997
     -----------------
@@ -74,13 +53,32 @@
     Changed the struct.pack() calls to pack the checksum and ID as
     unsigned. My thanks to Jerome Poincheval for the fix.
  
+    May 30, 2007
+    ------------
+    little rewrite by Jens Diemer:
+     -  change socket asterisk import to a normal import
+     -  replace time.time() with time.clock()
+     -  delete "return None" (or change to "return" only)
+     -  in checksum() rename "str" to "source_string"
  
-    Last commit info:
-    ~~~~~~~~~~~~~~~~~
-    $LastChangedDate: $
-    $Rev: $
-    $Author: $
+    November 8, 2009
+    ----------------
+    Improved compatibility with GNU/Linux systems.
+ 
+    Fixes by:
+     * George Notaras -- http://www.g-loaded.eu
+    Reported by:
+     * Chris Hallman -- http://cdhallman.blogspot.com
+ 
+    Changes in this release:
+     - Re-use time.time() instead of time.clock(). The 2007 implementation
+       worked only under Microsoft Windows. Failed on GNU/Linux.
+       time.clock() behaves differently under the two OSes[1].
+ 
+    [1] http://docs.python.org/library/time.html#time.clock
 """
+
+__version__ = "0.1"
  
  
 import os, sys, socket, struct, select, time
