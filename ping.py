@@ -31,7 +31,7 @@
 
     Fork by Pierre Bourdon:
       -> http://bitbucket.org/delroth/python-ping/
- 
+
     Revision history
     ~~~~~~~~~~~~~~~~
  
@@ -76,9 +76,19 @@
        time.clock() behaves differently under the two OSes[1].
  
     [1] http://docs.python.org/library/time.html#time.clock
+ 
+    September 25, 2010
+    ------------------
+    Little modifications by Georgi Kolev:
+     -  Added quiet_ping function.
+     -  returns percent lost packages, max round trip time, avrg round trip
+        time
+     -  Added packet size to verbose_ping & quiet_ping functions.
+     -  Bump up version to 0.1.1
+
 """
 
-__version__ = "0.1"
+__version__ = "0.1.1"
  
  
 import os, sys, socket, struct, select, time
@@ -144,11 +154,14 @@ def receive_one_ping(my_socket, ID, timeout):
             return
  
  
-def send_one_ping(my_socket, dest_addr, ID):
+def send_one_ping(my_socket, dest_addr, ID, psize):
     """
     Send one ping to the given >dest_addr<.
     """
     dest_addr  =  socket.gethostbyname(dest_addr)
+ 
+    # Remove header size from packet size
+    psize = psize - 8
  
     # Header is type (8), code (8), checksum (16), id (16), sequence (16)
     my_checksum = 0
@@ -156,7 +169,7 @@ def send_one_ping(my_socket, dest_addr, ID):
     # Make a dummy heder with a 0 checksum.
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, my_checksum, ID, 1)
     bytesInDouble = struct.calcsize("d")
-    data = (192 - bytesInDouble) * "Q"
+    data = (psize - bytesInDouble) * "Q"
     data = struct.pack("d", time.time()) + data
  
     # Calculate the checksum on the data and the dummy header.
@@ -171,7 +184,7 @@ def send_one_ping(my_socket, dest_addr, ID):
     my_socket.sendto(packet, (dest_addr, 1)) # Don't know about the 1
  
  
-def do_one(dest_addr, timeout):
+def do_one(dest_addr, timeout, psize):
     """
     Returns either the delay (in seconds) or none on timeout.
     """
@@ -190,22 +203,22 @@ def do_one(dest_addr, timeout):
  
     my_ID = os.getpid() & 0xFFFF
  
-    send_one_ping(my_socket, dest_addr, my_ID)
+    send_one_ping(my_socket, dest_addr, my_ID, psize)
     delay = receive_one_ping(my_socket, my_ID, timeout)
  
     my_socket.close()
     return delay
  
  
-def verbose_ping(dest_addr, timeout = 2, count = 4):
+def verbose_ping(dest_addr, timeout = 2, count = 4, psize = 64):
     """
-    Send >count< ping to >dest_addr< with the given >timeout< and display
-    the result.
+    Send `count' ping with ̀̀`psize' size to `dest_addr' with
+    the given `timeout' and display the result.
     """
     for i in xrange(count):
-        print "ping %s..." % dest_addr,
+        print "ping %s with ..." % dest_addr,
         try:
-            delay  =  do_one(dest_addr, timeout)
+            delay  =  do_one(dest_addr, timeout, psize)
         except socket.gaierror, e:
             print "failed. (socket error: '%s')" % e[1]
             break
@@ -217,6 +230,43 @@ def verbose_ping(dest_addr, timeout = 2, count = 4):
             print "get ping in %0.4fms" % delay
     print
  
+ 
+def quiet_ping(dest_addr, timeout = 2, count = 4, psize = 64):
+    """
+    Send `count' ping with `psize' size to `dest_addr' with
+    the given `timeout' and display the result.
+    Returns `percent' lost packages, `max' round trip time
+    and `avrg' round trip time.
+    """
+    mrtt = 0
+    artt = 0
+    lost = 0
+    plist = []
+
+    for i in xrange(count):
+    try:
+        delay = do_one(dest_addr, timeout, psize)
+    except socket.gaierror, e:
+        print "failed. (socket error: '%s')" % e[1]
+        break
+
+    if delay <> None:
+        delay = delay * 1000
+        plist.append(delay)
+
+    # Find lost package percent
+    percent_lost = 100 - int(len(plist) * 100 / count)
+    # Find max round trip time
+    for pkt in plist:
+    if float(pkt) > mrtt:
+        mrtt = '%0.3f' % float(pkt)
+    # Find avrg round trip time
+    for pkt in plist:
+    artt += '%0.3f' % float(pkt)
+    if len(plist) > 0:
+    artt = '%0.3f' % float(artt / len(plist))
+
+    return percent_lost, mrtt, artt
  
 if __name__ == '__main__':
     verbose_ping("heise.de")
