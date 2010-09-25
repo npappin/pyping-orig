@@ -84,11 +84,11 @@
      -  returns percent lost packages, max round trip time, avrg round trip
         time
      -  Added packet size to verbose_ping & quiet_ping functions.
-     -  Bump up version to 0.1.1
+     -  Bump up version to 0.2
 
 """
 
-__version__ = "0.1.1"
+__version__ = "0.2"
 
 import os
 import select
