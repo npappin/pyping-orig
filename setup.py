@@ -28,7 +28,7 @@ setup(
     py_modules=[
         'ping'
     ],
-    
+
     author="Pierre Bourdon",
     author_email="delroth@gmail.com",
     description="An implementation of ICMP ping in Python",
@@ -37,7 +37,7 @@ setup(
     keywords="ping icmp network latency",
     url="http://bitbucket.org/delroth/python-ping/",
     download_url="http://bitbucket.org/delroth/python-ping/downloads/python-ping-%s.tar.gz" % __version__,
-    
+
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
